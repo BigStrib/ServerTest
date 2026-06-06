@@ -1,12 +1,12 @@
 // ==========================================
 // 1. SUPABASE INITIALIZATION
 // ==========================================
-// REPLACE THESE WITH YOUR ACTUAL KEYS FROM PHASE 4
-const SUPABASE_URL = 'https://dnwuhpmlnmnhopzwaayl.supabase.co';
+// REPLACE THESE WITH YOUR ACTUAL KEYS
+const SUPABASE_URL = 'dnwuhpmlnmnhopzwaayl';
 const SUPABASE_ANON_KEY = 'sb_publishable_W2QjBZKx2MM9FfhaWPaPfA_eGk_Bwav';
 
-// Initialize the Supabase client
-const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// FIX: Name this 'supabaseClient' instead of 'supabase'
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ==========================================
 // 2. DOM ELEMENTS
@@ -20,11 +20,10 @@ const commentList = document.getElementById('commentList');
 // 3. FETCH & DISPLAY COMMENTS (READ)
 // ==========================================
 async function fetchComments() {
-    // Clear the loading state or current list
     commentList.innerHTML = '<p>Loading comments...</p>';
 
-    // Query Supabase: Select all columns from 'comments', order by newest first
-    const { data, error } = await supabase
+    // FIX: Use supabaseClient here
+    const { data, error } = await supabaseClient
         .from('comments')
         .select('*')
         .order('created_at', { ascending: false });
@@ -35,10 +34,8 @@ async function fetchComments() {
         return;
     }
 
-    // Clear the loading text
     commentList.innerHTML = '';
 
-    // Loop through the data and render it
     if (data.length === 0) {
         commentList.innerHTML = '<p>No comments yet. Be the first!</p>';
         return;
@@ -49,16 +46,13 @@ async function fetchComments() {
     });
 }
 
-// Helper function to build the HTML for a single comment
 function renderComment(commentData) {
     const newComment = document.createElement('div');
     newComment.classList.add('comment-card');
     
-    // Format the date to be human-readable
     const dateObj = new Date(commentData.created_at);
     const dateString = dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString();
 
-    // Escape HTML to prevent XSS attacks (security best practice)
     const safeName = escapeHTML(commentData.author_name);
     const safeText = escapeHTML(commentData.comment_text);
 
@@ -70,7 +64,6 @@ function renderComment(commentData) {
     commentList.appendChild(newComment);
 }
 
-// Helper function to sanitize user input
 function escapeHTML(str) {
     const div = document.createElement('div');
     div.innerText = str;
@@ -89,18 +82,16 @@ submitBtn.addEventListener('click', async function() {
         return;
     }
 
-    // Temporarily disable the button to prevent double-clicking
     submitBtn.disabled = true;
     submitBtn.innerText = "Posting...";
 
-    // Insert the data into Supabase
-    const { data, error } = await supabase
+    // FIX: Use supabaseClient here
+    const { data, error } = await supabaseClient
         .from('comments')
         .insert([
             { author_name: nameValue, comment_text: commentValue }
         ]);
 
-    // Re-enable button
     submitBtn.disabled = false;
     submitBtn.innerText = "Post Comment";
 
@@ -108,7 +99,6 @@ submitBtn.addEventListener('click', async function() {
         console.error("Error inserting comment:", error);
         alert("There was an error posting your comment. Check the console.");
     } else {
-        // Success! Clear fields and refresh the list to show the new comment
         nameInput.value = '';
         commentInput.value = '';
         fetchComments();
@@ -118,5 +108,4 @@ submitBtn.addEventListener('click', async function() {
 // ==========================================
 // 5. INITIALIZATION ON LOAD
 // ==========================================
-// Fetch comments immediately when the page loads
 fetchComments();
