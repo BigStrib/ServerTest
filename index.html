@@ -1,1 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Comment Board</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
 
+    <main class="container">
+        <h2>Leave a Comment</h2>
+        
+        <div class="comment-form">
+            <input type="text" id="nameInput" placeholder="Your Name" required />
+            <textarea id="commentInput" rows="4" placeholder="What's on your mind?" required></textarea>
+            <button id="submitBtn">Post Comment</button>
+        </div>
+
+        <div class="comments-section">
+            <h3>Recent Comments</h3>
+            <div id="commentList">
+                </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
