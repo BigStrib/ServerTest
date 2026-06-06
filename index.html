@@ -3,29 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Comment Board</title>
+    <title>Comment Board</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <main class="container">
-        <h2>Leave a Comment</h2>
-        
-        <div class="comment-form">
-            <input type="text" id="nameInput" placeholder="Your Name" required />
-            <textarea id="commentInput" rows="4" placeholder="What's on your mind?" required></textarea>
-            <button id="submitBtn">Post Comment</button>
-        </div>
-
-        <div class="comments-section">
-            <h3>Recent Comments</h3>
-            <div id="commentList">
+    <!-- ============ TOP: INPUT AREA ============ -->
+    <section class="input-panel">
+        <div class="input-inner">
+            <div class="brand-header">
+                <div class="brand-title">
+                    <i class="fas fa-comments brand-logo"></i>
+                    <h1>Discussion Board</h1>
                 </div>
+                <p class="subtitle">Join the conversation</p>
+            </div>
+
+            <div class="comment-form">
+                <div class="input-group">
+                    <label for="nameInput"><i class="fas fa-user"></i> Display Name</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="nameInput" placeholder="Enter your name..." maxlength="50" />
+                        <span class="char-count" id="nameCount">0/50</span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="commentInput"><i class="fas fa-pen"></i> Message</label>
+                    <div class="textarea-wrapper">
+                        <textarea id="commentInput" rows="2" placeholder="What's on your mind?" maxlength="500"></textarea>
+                        <div class="textarea-footer">
+                            <button class="emoji-toggle-btn" id="emojiToggleBtn" title="Add emoji">
+                                <i class="far fa-face-smile"></i>
+                            </button>
+                            <span class="char-count" id="commentCount">0/500</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <div class="post-hint">
+                        <i class="fas fa-keyboard"></i> Ctrl + Enter to post
+                    </div>
+                    <button id="submitBtn">
+                        <span class="btn-text">Post Comment</span>
+                        <i class="fas fa-paper-plane btn-icon"></i>
+                    </button>
+                </div>
+            </div>
         </div>
-    </main>
+    </section>
+
+    <!-- ============ EMOJI MODAL ============ -->
+    <div class="emoji-overlay" id="emojiOverlay"></div>
+    <div class="emoji-modal" id="emojiModal">
+        <div class="emoji-modal-header">
+            <h3><i class="far fa-face-smile"></i> Emoji Picker</h3>
+            <button class="emoji-close-btn" id="emojiCloseBtn" title="Close">
+                <i class="fas fa-xmark"></i>
+            </button>
+        </div>
+        <div class="emoji-modal-search">
+            <i class="fas fa-search"></i>
+            <input type="text" id="emojiSearch" placeholder="Search emojis..." />
+        </div>
+        <div class="emoji-modal-categories" id="emojiCategoryBar">
+            <button class="cat-btn active" data-group="smileys-emotion"><i class="far fa-face-smile"></i></button>
+            <button class="cat-btn" data-group="people-body"><i class="fas fa-hand-peace"></i></button>
+            <button class="cat-btn" data-group="animals-nature"><i class="fas fa-paw"></i></button>
+            <button class="cat-btn" data-group="food-drink"><i class="fas fa-utensils"></i></button>
+            <button class="cat-btn" data-group="travel-places"><i class="fas fa-plane"></i></button>
+            <button class="cat-btn" data-group="activities"><i class="fas fa-futbol"></i></button>
+            <button class="cat-btn" data-group="objects"><i class="fas fa-lightbulb"></i></button>
+            <button class="cat-btn" data-group="symbols"><i class="fas fa-heart"></i></button>
+            <button class="cat-btn" data-group="flags"><i class="fas fa-flag"></i></button>
+        </div>
+        <div class="emoji-modal-grid" id="emojiGrid">
+            <div class="emoji-loading">
+                <i class="fas fa-spinner fa-spin"></i> Loading emojis...
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ BOTTOM: COMMENTS ============ -->
+    <section class="comments-panel">
+        <div class="comments-header">
+            <div class="comments-title">
+                <i class="far fa-message"></i>
+                <h2>Comments</h2>
+            </div>
+            <div class="comments-meta">
+                <span class="comment-total" id="commentTotal">
+                    <i class="far fa-comment"></i> 0
+                </span>
+                <button class="refresh-btn" id="refreshBtn" title="Refresh">
+                    <i class="fas fa-arrows-rotate"></i>
+                </button>
+            </div>
+        </div>
+        <div class="comments-scroll" id="commentList"></div>
+    </section>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <i class="toast-icon fas fa-check-circle"></i>
+        <span class="toast-text">Comment posted successfully!</span>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
     <script src="script.js"></script>
 </body>
 </html>
