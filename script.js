@@ -2,8 +2,8 @@
 // 1. SUPABASE INITIALIZATION
 // ==========================================
 // REPLACE THESE WITH YOUR ACTUAL KEYS
-const SUPABASE_URL = 'dnwuhpmlnmnhopzwaayl';
-const SUPABASE_ANON_KEY = 'sb_publishable_W2QjBZKx2MM9FfhaWPaPfA_eGk_Bwav';
+const SUPABASE_URL = 'sb_publishable_W2QjBZKx2MM9FfhaWPaPfA_eGk_Bwav';
+const SUPABASE_ANON_KEY = 'dnwuhpmlnmnhopzwaayl';
 
 // FIX: Name this 'supabaseClient' instead of 'supabase'
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
