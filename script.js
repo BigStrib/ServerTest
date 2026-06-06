@@ -1,12 +1,12 @@
 // ==========================================
 // 1. SUPABASE INITIALIZATION
 // ==========================================
-// REPLACE THESE WITH YOUR ACTUAL KEYS
-const SUPABASE_URL = 'sb_publishable_W2QjBZKx2MM9FfhaWPaPfA_eGk_Bwav';
-const SUPABASE_ANON_KEY = 'dnwuhpmlnmnhopzwaayl';
+// REPLACE THESE WITH YOUR ACTUAL KEYS FROM THE SUPABASE DASHBOARD
+const PROJECT_URL = 'https://dnwuhpmlnmnhopzwaayl.supabase.co';
+const ANON_PUBLIC_KEY = 'sb_publishable_W2QjBZKx2MM9FfhaWPaPfA_eGk_Bwav';
 
-// FIX: Name this 'supabaseClient' instead of 'supabase'
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// Initialize the client using the exact dashboard names
+const supabaseClient = supabase.createClient(PROJECT_URL, ANON_PUBLIC_KEY);
 
 // ==========================================
 // 2. DOM ELEMENTS
@@ -22,7 +22,6 @@ const commentList = document.getElementById('commentList');
 async function fetchComments() {
     commentList.innerHTML = '<p>Loading comments...</p>';
 
-    // FIX: Use supabaseClient here
     const { data, error } = await supabaseClient
         .from('comments')
         .select('*')
@@ -85,7 +84,6 @@ submitBtn.addEventListener('click', async function() {
     submitBtn.disabled = true;
     submitBtn.innerText = "Posting...";
 
-    // FIX: Use supabaseClient here
     const { data, error } = await supabaseClient
         .from('comments')
         .insert([
