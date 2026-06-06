@@ -339,7 +339,6 @@ function formatFullDateTime(dateString) {
     const day = date.getDate();
     const year = date.getFullYear();
 
-    // Add ordinal suffix
     let suffix = 'th';
     if (day === 1 || day === 21 || day === 31) suffix = 'st';
     else if (day === 2 || day === 22) suffix = 'nd';
@@ -427,7 +426,7 @@ function renderComment(commentData, index) {
         <div class="comment-body">${safeText}</div>
         <div class="comment-timestamp">
             <i class="far fa-calendar-alt"></i>
-            <span>Posted on ${fullDateTime}</span>
+            <span>Posted at ${fullDateTime}</span>
         </div>
     `;
 
@@ -490,7 +489,7 @@ commentInput.addEventListener('keydown', (e) => {
 });
 
 // ==========================================
-// 13. REALTIME - new comments auto appear
+// 13. REALTIME
 // ==========================================
 supabaseClient
     .channel('public-comments')
