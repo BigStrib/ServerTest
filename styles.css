@@ -560,7 +560,7 @@ body {
 .comment-card {
     background: #1e2025;
     border-radius: 6px;
-    padding: 0.7rem 0.9rem;
+    padding: 0.75rem 0.9rem;
     margin-bottom: 0.35rem;
     transition: all 0.15s;
     animation: cardIn 0.25s ease;
@@ -580,87 +580,37 @@ body {
 .comment-card-header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    margin-bottom: 0.3rem;
-}
-
-.comment-author {
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    margin-bottom: 0.35rem;
+    gap: 8px;
 }
 
 .author-name {
     font-weight: 600;
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     color: #8b3a3f;
 }
 
-.comment-time {
-    font-size: 0.6rem;
-    color: #444;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-
-.comment-time i {
-    font-size: 0.55rem;
-}
-
 .comment-body {
-    font-size: 0.8rem;
-    line-height: 1.45;
-    color: #999;
-    padding-left: 0.2rem;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: #b0b3b8;
+    padding-left: 0.15rem;
     word-wrap: break-word;
+    margin-bottom: 0.4rem;
 }
 
-.comment-reactions {
-    display: flex;
-    gap: 5px;
-    margin-top: 6px;
-    padding-left: 0.2rem;
-}
-
-.reaction-btn {
-    background: #141517;
-    border: 1px solid #27292f;
-    padding: 3px 10px;
-    border-radius: 14px;
-    cursor: pointer;
-    font-size: 0.68rem;
+.comment-timestamp {
     display: flex;
     align-items: center;
-    gap: 4px;
-    transition: all 0.15s;
-    color: #666;
-    font-family: inherit;
+    gap: 5px;
+    font-size: 0.68rem;
+    color: #555860;
+    padding-left: 0.15rem;
 }
 
-.reaction-btn i {
-    font-size: 0.65rem;
-}
-
-.reaction-btn .count {
-    font-weight: 600;
-    min-width: 8px;
-    text-align: center;
-}
-
-.reaction-btn:hover {
-    border-color: #8b3a3f;
-    color: #aaa;
-}
-
-.reaction-btn.reacted {
-    background: rgba(139, 58, 63, 0.15);
-    border-color: #8b3a3f;
-    color: #a34a50;
-}
-
-.reaction-btn.reacted .count {
-    color: #a34a50;
+.comment-timestamp i {
+    font-size: 0.6rem;
+    color: #4a4d55;
 }
 
 /* States */
