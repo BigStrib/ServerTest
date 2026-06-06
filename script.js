@@ -1,36 +1,122 @@
-// Grab the elements from the HTML
+// ==========================================
+// 1. SUPABASE INITIALIZATION
+// ==========================================
+// REPLACE THESE WITH YOUR ACTUAL KEYS FROM PHASE 4
+const SUPABASE_URL = 'https://dnwuhpmlnmnhopzwaayl.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_W2QjBZKx2MM9FfhaWPaPfA_eGk_Bwav';
+
+// Initialize the Supabase client
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// ==========================================
+// 2. DOM ELEMENTS
+// ==========================================
 const nameInput = document.getElementById('nameInput');
 const commentInput = document.getElementById('commentInput');
 const submitBtn = document.getElementById('submitBtn');
 const commentList = document.getElementById('commentList');
 
-// Add a click event to the submit button
-submitBtn.addEventListener('click', function() {
+// ==========================================
+// 3. FETCH & DISPLAY COMMENTS (READ)
+// ==========================================
+async function fetchComments() {
+    // Clear the loading state or current list
+    commentList.innerHTML = '<p>Loading comments...</p>';
+
+    // Query Supabase: Select all columns from 'comments', order by newest first
+    const { data, error } = await supabase
+        .from('comments')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+    if (error) {
+        console.error("Error fetching comments:", error);
+        commentList.innerHTML = '<p style="color:red;">Failed to load comments.</p>';
+        return;
+    }
+
+    // Clear the loading text
+    commentList.innerHTML = '';
+
+    // Loop through the data and render it
+    if (data.length === 0) {
+        commentList.innerHTML = '<p>No comments yet. Be the first!</p>';
+        return;
+    }
+
+    data.forEach(comment => {
+        renderComment(comment);
+    });
+}
+
+// Helper function to build the HTML for a single comment
+function renderComment(commentData) {
+    const newComment = document.createElement('div');
+    newComment.classList.add('comment-card');
     
-    // Get the text the user typed
+    // Format the date to be human-readable
+    const dateObj = new Date(commentData.created_at);
+    const dateString = dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString();
+
+    // Escape HTML to prevent XSS attacks (security best practice)
+    const safeName = escapeHTML(commentData.author_name);
+    const safeText = escapeHTML(commentData.comment_text);
+
+    newComment.innerHTML = `
+        <strong>${safeName}</strong> <span style="font-size: 0.8em; color: #888;">${dateString}</span>
+        <p>${safeText}</p>
+    `;
+
+    commentList.appendChild(newComment);
+}
+
+// Helper function to sanitize user input
+function escapeHTML(str) {
+    const div = document.createElement('div');
+    div.innerText = str;
+    return div.innerHTML;
+}
+
+// ==========================================
+// 4. SUBMIT A NEW COMMENT (CREATE)
+// ==========================================
+submitBtn.addEventListener('click', async function() {
     const nameValue = nameInput.value.trim();
     const commentValue = commentInput.value.trim();
 
-    // Make sure they didn't leave it blank
     if (nameValue === "" || commentValue === "") {
         alert("Please fill out both your name and comment.");
         return;
     }
 
-    // Create a new div to hold the comment
-    const newComment = document.createElement('div');
-    newComment.classList.add('comment-card');
+    // Temporarily disable the button to prevent double-clicking
+    submitBtn.disabled = true;
+    submitBtn.innerText = "Posting...";
 
-    // Add the HTML for the name and comment text inside the div
-    newComment.innerHTML = `
-        <strong>${nameValue}</strong>
-        <p>${commentValue}</p>
-    `;
+    // Insert the data into Supabase
+    const { data, error } = await supabase
+        .from('comments')
+        .insert([
+            { author_name: nameValue, comment_text: commentValue }
+        ]);
 
-    // Add the new comment to the top of the list
-    commentList.prepend(newComment);
+    // Re-enable button
+    submitBtn.disabled = false;
+    submitBtn.innerText = "Post Comment";
 
-    // Clear the input fields for the next comment
-    nameInput.value = '';
-    commentInput.value = '';
+    if (error) {
+        console.error("Error inserting comment:", error);
+        alert("There was an error posting your comment. Check the console.");
+    } else {
+        // Success! Clear fields and refresh the list to show the new comment
+        nameInput.value = '';
+        commentInput.value = '';
+        fetchComments();
+    }
 });
+
+// ==========================================
+// 5. INITIALIZATION ON LOAD
+// ==========================================
+// Fetch comments immediately when the page loads
+fetchComments();
