@@ -1,1 +1,1 @@
-This is one of my first server tests. User simply would put a display name and their message. They press Post Comment and it will display the comment in real time below.
+This is one of my first server tests. User simply would put a display name and their message. They press Post Comment and it will display the comment in real time below. Right now it does not work since its not linked to a server at this time. 
